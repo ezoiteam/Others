@@ -7,23 +7,7 @@
 */
 
 #include <cstdio>
-#define read_signed(a)\
-{\
-	typeof(a)& __a = a;\
-	while (*++ptr_buff >> 5 != 1);\
-	bool flag = *ptr_buff == '-';\
-	if (flag)\
-		++ptr_buff;\
-	__a = 0;\
-	do\
-		__a = __a * 10 + *ptr_buff - '0';\
-	while (*++ptr_buff >> 4 == 3);\
-	if (flag)\
-		__a = -__a;\
-}
-#define LEN (1 << 25)
-char buff[LEN];
-const char *ptr_buff = buff - 1;
+
 /**
  *	@breif	Fast read for signed integer.  
  *	@author	xukl
@@ -38,7 +22,38 @@ const char *ptr_buff = buff - 1;
  *			it is recommended to make ptr_buff a local variable
  *			to improve performance.  
 */
+#define read_signed(a)\
+{\
+	while (*++ptr_buff >> 5 != 1);\
+	bool flag = *ptr_buff == '-';\
+	if (flag)\
+		++ptr_buff;\
+	(a) = 0;\
+	do\
+		(a) = (a) * 10 + *ptr_buff - '0';\
+	while (*++ptr_buff >> 4 == 3);\
+	if (flag)\
+		(a) = -(a);\
+}
+#define read_unsigned(a)\
+{\
+	while (*++ptr_buff >> 4 != 3);\
+	(a) = 0;\
+	do\
+		(a) = (a) * 10 + *ptr_buff - '0';\
+	while (*++ptr_buff >> 4 == 3);\
+}
+#define LEN (1 << 25)
+char buff[LEN];
+const char *ptr_buff = buff - 1;
 
+/**
+ *	@breif	Fast(?) write for signed integer.  
+ *	@author	xukl
+ *	@depend	putchar(int) and puts(const char*) in <cstdio>
+ *	@note	This function is distributed in the hope that it will be useful,
+ *			but WITHOUT ANY WARRANTY.  IT MAY BE SLOW!!  
+*/
 inline void write_signed(int x)
 {
 	if (x < 0)
@@ -56,13 +71,6 @@ inline void write_signed(int x)
 	while (x != 0);
 	puts(ptr);
 }
-/**
- *	@breif	Fast(?) write for signed integer.  
- *	@author	xukl
- *	@depend	putchar(int) and puts(const char*) in <cstdio>
- *	@note	This function is distributed in the hope that it will be useful,
- *			but WITHOUT ANY WARRANTY.  IT MAY BE SLOW!!  
-*/
 
 //	Following shows a example.  
 int main()
@@ -75,6 +83,9 @@ int main()
 		int a;
 		read_signed(a);
 		write_signed(a);
+		unsigned b;
+		read_unsigned(b);
+		write_signed(b);
 	}
 	return 0;
 }
